@@ -25,6 +25,7 @@ which is provided as a module.
     nixosConfigurations.yourpc = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
+        { environment.systemPackages = [ nixpkgs.picotron ]; }
         picotron.nixosModules.default
         # ...
       ];
