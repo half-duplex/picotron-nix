@@ -6,12 +6,15 @@
     nixpkgs,
     ...
   }: let
-    supportedSystems = ["x86_64-linux"];
+    supportedSystems = [
+      "x86_64-linux"
+      "aarch64-linux" # Untested
+    ];
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     nixpkgsFor = forAllSystems (system: import nixpkgs {inherit system;});
   in {
     packages = forAllSystems (system: {
-      default = self.packages.picotron;
+      default = self.packages.${system}.picotron;
       picotron = nixpkgsFor.${system}.callPackage ./package.nix {};
     });
 

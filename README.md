@@ -1,7 +1,7 @@
 # picotron-nix
 
 1. Download the [Picotron](https://www.lexaloffle.com/picotron.php) zip that
-   matches the version in default.nix, e.g. picotron\_0.2.2b\_amd64.zip
+   matches the version in default.nix, e.g. picotron\_0.3.0d2\_amd64.zip
 2. Add it to the nix store with `nix store add-path picotron_*_amd64.zip`
 3. Run Picotron:
    If you have `{allowUnfree=true;}` in `~/.config/nixpkgs/config.nix`,

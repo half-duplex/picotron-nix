@@ -8,23 +8,33 @@
   curl,
   SDL2,
   unzip,
+  pico_version ? "0.3.0d2",
+  pico_hashes ? {
+    amd64 = "sha256-deGRvkJJoItL7oLT0OAhJ67dMePZPQT+MLVTbY/PCEY=";
+    raspi = "sha256-uoR4jwsEPXXPS+U6jfgPLBkvOoR+TRAjrL64ISTLrnU=";
+  },
   dyn ? true,
+  download_email ? "",
+  download_token ? "",
   ...
 }: let
   pname = "picotron";
-  version = "0.2.2b";
-  hash = "sha256-QLdgym7C36NHoZVx7AbMn4pKZ67xcYNStJVi5g8m4Js=";
+  arch_string = {
+    x86_64-linux = "amd64";
+    aarch64-linux = "raspi";
+  }.${stdenvNoCC.targetPlatform.system};
   dyn_suffix =
-    if dyn
+    if dyn && arch_string != "raspi"
     then "_dyn"
     else "";
 in
   stdenvNoCC.mkDerivation {
-    inherit pname version;
+    inherit pname;
+    version = pico_version;
     nativeBuildInputs = [autoPatchelfHook makeShellWrapper unzip];
     src = fetchurl {
-      inherit hash;
-      url = "picotron_${version}_amd64.zip";
+      hash = pico_hashes.${arch_string};
+      url = "https://www.lexaloffle.com/dl/user/${download_email}/${download_token}/picotron_${pico_version}_${arch_string}.zip";
     };
     buildInputs = [SDL2];
     runtimeDependencies = [curl.out];
